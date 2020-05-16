@@ -35,7 +35,14 @@ window.addEventListener("DOMContentLoaded", () => {
 function processData(incoming) {
     // process signal
     for (let key in CHARTS) {
-        addData(key, incoming["signal"][key]);
+        if (key === 'merged') {
+            // mash data together
+            let idata = [];
+            for (const akey of MERGED) {
+                idata.push([akey, incoming["signal"][akey]]);
+            }
+            addData(key, idata);
+        } else { addData(key, incoming["signal"][key]); }
     }
     // process everything else:
     document.getElementById("batt").innerText = incoming["batt"];

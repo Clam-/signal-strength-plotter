@@ -1,8 +1,9 @@
+// Merge RSRP, RSSI, RSCP on to same graph
+MERGED = ["rsrp", "rssi", "rscp"];
+
 const CHARTS = {
-  "rssi" : null,
-  "rscp" : null,
+  "merged" : null,
   "ecio" : null,
-  "rsrp" : null,
   "rsrq" : null,
   "sinr" : null,
 }
@@ -14,11 +15,21 @@ function addAdv(adv) {
   if (ADVBUFFER.length > 20) { ADVBUFFER.shift(); }
   ADVBUFFER.push(adv);
 }
+
 function addData(dataname, item) {
-  let il = CHARTS[dataname].data;
+  let il = CHARTS[dataname].data; 
   let remove = 0;
-  if (il.length > 50) { remove = 1; }
-  CHARTS[dataname].addData({"date": new Date(), "value": item}, remove);
+  let idata = {};
+  if (il.length > 80) { remove = 1; }
+  if (dataname === 'merged') {
+    idata["date"] = new Date();
+    for(const i of item) {
+      idata[i[0]] = i[1];
+    }
+  } else {
+    idata = {"date": new Date(), "value": item};
+  }
+  CHARTS[dataname].addData(idata, remove);
 }
 
 function createChart(name) {
@@ -26,16 +37,27 @@ function createChart(name) {
   ichart.data = [];
   ichart.xAxes.push(new am4charts.DateAxis());
   ichart.yAxes.push(new am4charts.ValueAxis());
-  var series = ichart.series.push(new am4charts.LineSeries());
-  series.dataFields.valueY = "value";
-  series.dataFields.dateX = "date";
-  series.name = name.toLocaleUpperCase();
-  //ichart.scrollbarX = new am4core.Scrollbar();
-  //ichart.scrollbarY = new am4core.Scrollbar();
+  if (name === 'merged') {
+    for (const ikey of MERGED) {
+      let iseries = ichart.series.push(new am4charts.LineSeries());
+      iseries.dataFields.valueY = ikey;
+      iseries.dataFields.dateX = "date";
+      iseries.name = ikey.toLocaleUpperCase();
+    }
+  } else {
+    let series = ichart.series.push(new am4charts.LineSeries());
+    series.dataFields.valueY = "value";
+    series.dataFields.dateX = "date";
+    series.name = name.toLocaleUpperCase();
+  }
+  ichart.legend = new am4charts.Legend();
+  ichart.legend.position = "left";
   CHARTS[name] = ichart;
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  am4core.useTheme(am4themes_amchartsdark);
+  am4core.useTheme(am4themes_dark);
   // Create charts
   for (let key in CHARTS) {
     createChart(key);

@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8">
     <title>Signal Strength Plotter</title>
+    <link href="style.css" rel="stylesheet">
   </head>
   <body>
     <p>Battery: <span id="batt">-</span>% Connection: <span id="conn"></span></p>
     <p>Device URL: <input id="urlinput"> Refresh time: <input id="delayinput"></p>
-    <div id="rssi"></div>
-    <div id="rscp"></div>
-    <div id="ecio"></div>
-    <div id="rsrp"></div>
-    <div id="rsrq"></div>
-    <div id="sinr"></div>
+    <!-- // Merge RSRP, RSSI, RSCP on to same graph -->
+    <div id="merged" class="chart"></div>
+    <div id="ecio" class="chart"></div>
+    <div id="rsrq" class="chart"></div>
+    <div id="sinr" class="chart"></div>
     <p>LAC, MCC, MNC, RAC, cellId, chanId, curBand</p>
     <textarea id="celllog" rows="10" style="width: 100%;"></textarea>
     
@@ -22,5 +22,8 @@
     <script src="workersetup.js"></script>
     <script src="https://www.amcharts.com/lib/4/core.js"></script>
     <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/dark.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/amchartsdark.js"></script>
   </body>
 </html>
