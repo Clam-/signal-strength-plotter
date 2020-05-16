@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Signal Strength Plotter</title>
+  </head>
+  <body>
+    <p>Battery: <span id="batt">-</span>% Connection: <span id="conn"></span></p>
+    <p>Device URL: <input id="urlinput"> Refresh time: <input id="delayinput"></p>
+    <div id="rssi"></div>
+    <div id="rscp"></div>
+    <div id="ecio"></div>
+    <div id="rsrp"></div>
+    <div id="rsrq"></div>
+    <div id="sinr"></div>
+    <p>LAC, MCC, MNC, RAC, cellId, chanId, curBand</p>
+    <textarea id="celllog" rows="10" style="width: 100%;"></textarea>
+    
+    <!-- spooky -->
+    <script src="stringinterp.js"></script>
+    <script src="pagesetup.js"></script>
+    <script src="workersetup.js"></script>
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+  </body>
+</html>
